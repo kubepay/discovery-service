@@ -1,0 +1,31 @@
+sudo: false
+language: java
+cache:
+  directories:
+  - "$HOME/.cache"
+  - "$HOME/.m2"
+services:
+- docker
+before_script:
+- sleep 15
+- cp .travis.settings.xml $HOME/.m2/settings.xml
+script:
+- mvn clean install -DskipTests=true
+before_deploy:
+- chmod ugo+x deploy_travisci.sh
+deploy:
+  provider: script
+  script:
+  - sh ./deploy_travisci.sh
+  skip_cleanup: true
+  on:
+    tags: false
+notifications:
+  email:
+    recipients:
+    - abhiesa@outlook.com
+    on_success: change
+    on_failure: always
+env:
+  global:
+    secure: fG5uqyUN/0uYkmc1wUuHWwbgVOb69qSkAiUuz1eBjtx6oN2cnpFWF4/4BNsCOqqJaoRmuFq4ImqyuLgHI1/jjfaum2JlEmbEWvF8sf+cFwFNrh+A+wHHYz1DPOSWkrlLsMVBVryMe3B/HyeMI0MS3Vo8Fg5pbPcG8/20yWEUDCYRdSVhrK7Ld/YIVTjtKdxPYCkRPDqspO7xsetLL1Sgslcqj2atoQj176ubbZ1+IGFlkevh00QR99tkgjZeHIN5EjN7ah191YaNXn4a3p55eXDJqH/XdWh8jurK6WJB55oo9kYMXCjPLMWu3k6Ttp2ipocLbbYlzATYcgWFDVkN6SyjH2O9CY/NSAxkKUFKVJ78BI/D7TT4osrR0tiPS6PhzJvkeeEQA/mZFXtTDiwBz+gsOCz+Vclr6DR8pwdOuLVmpL1sRdUdaTiQUZuJ5jIXgLAsw0tTSLgEQUz2L0TwoyJHTTxkOLhiUfsvHzSK5syPdH8VYMEhP/bYdnhrnHQcWU57msrl8V7VDal1iRQFOZh2uVwbrKAOFHtSznoPXGpNOUpUjbuR+ZAErMlLWTI5Dy5xoGPAvhF+ZKmrRuaTogWw1remQDrJ18N9Ge4kug8IKcKdX1o61Feu2Qm4Tj/wM1/E9ZXgRYMZMdaO53w4sBD5W/2xVb8rPvWi/x/f2qQ=
